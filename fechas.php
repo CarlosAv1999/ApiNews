@@ -6,6 +6,7 @@ $date2 = "Thu, 17 Mar 2022 18:57:16 -0400";
 $date3 = "2022-03-16T22:12:41Z";
 $date4 = "2022-03-17T17:23:10-04:00";
 $date5 = "Sun, 20 Mar 2022 16:57:38 +0000";
+$date6;
 //echo date_format($date1, 'Y-m-d H:i:s');
 #output: 2012-03-24 17:45:12
 //echo date("jS F, Y H:i:s", strtotime("Sun, 20 Mar 2022 12:19:05 -0400"));
