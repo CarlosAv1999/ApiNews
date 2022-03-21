@@ -1,0 +1,63 @@
+/*obtener noticias de una categoria:*/
+SELECT news.shipment_id, news.title, news.description, news.url, news.published, categories.name
+FROM news, feeds, categories
+WHERE news.feed_id = feeds.order_id AND feeds.category_id = categories.id AND feeds.category_id = 1;
+
+/*obtener todo:*/
+SELECT DISTINCT news.shipment_id, news.title, news.description, news.url, news.published, categories.name 
+FROM news, categories, feeds 
+WHERE news.feed_id = feeds.order_id AND feeds.category_id = categories.id 
+ORDER BY news.shipment_id;
+
+/*Obtener noticia por id*/
+SELECT	DISTINCT news.shipment_id, news.title, news.description, news.url, news.published, categories.name
+FROM news, categories, feeds 
+WHERE news.shipment_id > 0	AND news.feed_id = feeds.order_id AND feeds.category_id = categories.id AND categories.id > 0 AND news.shipment_id = 9;
+
+/*Obtener pot titulo*/
+SELECT	DISTINCT news.shipment_id, news.title, news.description, news.url, news.published, categories.name
+FROM news, categories, feeds 
+WHERE news.shipment_id > 0	AND news.feed_id = feeds.order_id AND feeds.category_id = categories.id AND categories.id > 0 AND news.title LIKE '%fc barcelona%';
+
+/*obtener en orden*/
+SELECT	DISTINCT news.shipment_id, news.title, news.description, news.url, news.published, categories.name
+FROM news, categories, feeds 
+WHERE news.shipment_id > 0	AND news.feed_id = feeds.order_id AND feeds.category_id = categories.id AND categories.id > 0 
+ORDER BY categories.name;
+
+/*obtener noticias de un feed*/
+SELECT	DISTINCT news.shipment_id, news.title, news.description, news.url, news.published, categories.name
+FROM news, categories, feeds 
+WHERE news.shipment_id > 0	AND news.feed_id = feeds.order_id AND feeds.category_id = categories.id AND categories.id > 0 AND news.feed_id = 3;
+
+/*obtener informacion feeds*/
+SELECT feeds.order_id, feeds.category_id, feeds.url, categories.name 
+FROM feeds, categories
+WHERE feeds.order_id > 0 AND categories.id > 0 AND categories.id = feeds.category_id
+
+/*obtener informacion id ultimo feed creado*/
+SELECT feeds.order_id, feeds.category_id, feeds.url, categories.name 
+FROM feeds, categories
+WHERE feeds.order_id > 0 AND categories.id > 0 AND categories.id = feeds.category_id ORDER by feeds.order_id DESC;
+
+/*obtener info de un feed por id*/
+SELECT feeds.order_id, feeds.category_id, feeds.url, categories.name 
+FROM feeds, categories
+WHERE feeds.category_id = categories.id AND feeds.order_id = 15;
+
+/*obtener id de una categoria por nombre*/
+SELECT	DISTINCT categories.id, categories.name 
+FROM categories
+WHERE categories.id>0 AND categories.name LIKE '%sport%';
+
+/*insertar category*/
+INSERT INTO `categories` (`id`, `name`) VALUES (NULL, 'espectaculos');
+
+/*insertar feed*/
+INSERT INTO `feeds` (`order_id`, `category_id`, `url`) VALUES (NULL, '10', 'https://www.youtube.com/');
+
+/*insertar noticia*/
+INSERT INTO `news` (`shipment_id`, `feed_id`, `title`, `description`, `published`, `url`) 
+VALUES (NULL, '4', 'Estadística de la industria minerometalúrgica', 'El índice de volumen físico de la Producción minerometalúrgica del país aumentó 2.7%....', 'Thu, 30 Sep 2021 00:00:00 GM', 'http://www.inegi.org.mx/app/saladeprensa/noticia.html?id=6816');
+
+

@@ -1,0 +1,39 @@
+get by id:
+http://localhost/ApiNews/?id=
+
+get all:
+http://localhost/ApiNews/
+http://localhost/ApiNews/index.php
+
+get by title:
+http://localhost/ApiNews/indextitulo.php/?title=
+
+get by sort:
+http://localhost/ApiNews/indexsort.php/?sort=
+
+get info feeds:
+http://localhost/ApiNews/indexinfofeeds.php
+
+get news feed:
+http://localhost/ApiNews/indexnewsfeed.php/?id=
+
+refresh all feeds
+
+
+refresh one feed by id
+http://localhost/ApiNews/indexrefreshid.php/?id=13
+
+post category
+http://localhost:5000/ApiNews/postCategory.php/?name=
+
+post Feed
+http://localhost:5000/ApiNews/postFeed.php/?url=&name=
+
+function feedsService() {
+  function create(feeds) {
+    return axios({
+      method: 'GET',
+      baseURL: BASE_BACKEND_URL,
+      url: `http://localhost:5000/ApiNews/postFeed.php/?url${feeds.url}=&name=Prueba2`,
+    });
+  }
