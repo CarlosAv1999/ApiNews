@@ -1,0 +1,5 @@
+http://www.cbn.com/cbnnews/us/feed/
+https://moxie.foxnews.com/feedburner/latest.xml
+https://www.latimes.com/local/rss2.0.xml
+https://moxie.foxnews.com/feedburner/sports.xml
+https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml

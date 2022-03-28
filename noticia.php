@@ -78,7 +78,7 @@ class Noticia extends DB{
                 //$query->execute(['orden' => $orden]);
                 break;
 
-            case "categories":
+            case "category":
                 $query = $this->connect()->query('SELECT DISTINCT news.shipment_id, news.title, news.description, news.url, news.published, categories.name
                 FROM news, categories, feeds 
                 WHERE news.shipment_id > 0	AND news.feed_id = feeds.order_id AND feeds.category_id = categories.id AND categories.id > 0 
