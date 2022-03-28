@@ -1,13 +1,13 @@
 <?php
 include_once 'alloycors.php';
-$feeds = $_GET['feeds'];
+//$feeds = $_GET['feeds'];
 $url = $_GET['url'];
 $name = $_GET['name'];
 
-$urlf = json_decode($feeds);
+//$urlf = json_decode($feeds);
 echo "-------------------------------------------------------------------------------";
 echo "<br>";
-print_r($urlf);
+//print_r($urlf);
 echo "<br>";
 echo "-------------------------------------------------------------------------------";
 

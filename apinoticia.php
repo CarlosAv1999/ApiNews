@@ -281,12 +281,55 @@ class ApiNoticias{
 
     function addCategoria($item){
         $categoria = new Noticia();
-        $res = $categoria->nuevaCategoria($item);
-        $this->exito('Nuevo categoria registrada');
+        $existe = true;
+
+        $obj1 = json_decode($this->getAllCategories());
+        $arrayFeeds = $obj1->{"items"};
+
+        for($i = 0; $i < count($arrayFeeds); $i++){
+            //echo $i;
+            $obj2 =  $arrayFeeds[$i];
+            $name = $obj2->name;
+            echo $name;
+
+            if (strcmp($name, $item['name']) === 0) {
+                $existe = false;
+            }
+            
+        }
+
+        if ($existe) {
+
+            $res = $categoria->nuevaCategoria($item);
+            $this->exito('Nuevo categoria registrada');
+        }else{
+            $this->error('Ya existe la categoria ingresada');
+        }
     }
 
     function addFeed($item){
         $feed = new Noticia();
+        $existe = true;
+        $imagenDef = "https://cdn-icons-png.flaticon.com/512/21/21601.png";
+
+        $obj1 = json_decode($this->getAllInfoFeed());
+        //print_r($obj1);
+        $arrayFeeds = $obj1->{"items"};
+        
+        //echo = count($arrayFeeds);
+
+        for($i = 0; $i < count($arrayFeeds); $i++){
+            //echo $i;
+            $obj2 =  $arrayFeeds[$i];
+            $url = $obj2->url;
+
+            if (strcmp($url, $item['url']) === 0) {
+                $existe = false;
+            }
+            
+        }
+
+        if($existe){
 
         $obj1 = json_decode($this->getCategoryByName($item));
         $arrayId = $obj1->{"items"};
@@ -298,6 +341,7 @@ class ApiNoticias{
             'id' => $catId,
             'url' => $item['url']
         );
+
         $rss = simplexml_load_file($arrayFeed['url']);
 
         $res = $feed->nuevoFeed($arrayFeed);
@@ -312,6 +356,13 @@ class ApiNoticias{
 
         echo '<h4>'. $rss->channel->title . '</h4>';
         $imagen = $rss->channel->image->url;
+
+        if(strcmp($imagen, "") === 0){
+            $imagen = $imagenDef;
+        }
+        echo '<br>';
+        echo 'imagen url: '.$imagen;
+        echo '<br>';
         foreach ($rss->channel->item as $item) {
             //echo "<p>" . $item->title . "</p>";
             $titulo = $item->title;
@@ -328,6 +379,9 @@ class ApiNoticias{
         } 
 
         $this->exito('Nuevo feed registrado');
+    }else{
+        $this->error("El url del feed ya existe");
+    }
     }
 
     function addNoticia($item){
