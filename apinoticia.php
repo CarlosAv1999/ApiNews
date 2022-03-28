@@ -321,7 +321,7 @@ class ApiNoticias{
             $descripcion = str_replace("</p>", "", $descripcion);
             //echo "<p>" . $item->pubDate . "</p>";
             $date = $item->pubDate;
-            $date= date("Y/m/d\, H:i:s\, D\, M j", strtotime($date));
+            $date= date("Y/m/d\, H:i:s", strtotime($date));
             //echo "<p>" . $item->link . "</p>";
             $url = $item->link;
             $res = $feed->nuevaNoticia($lastFeedId, $titulo, $descripcion, $date, $url, $imagen);
@@ -364,7 +364,7 @@ class ApiNoticias{
                 $descripcion = str_replace("</p>", "", $descripcion);
                 //echo "<p>" . $item->pubDate . "</p>";
                 $date = $item->pubDate;
-                $date= date("Y/m/d\, H:i:s\, D\, M j", strtotime($date));
+                $date= date("Y/m/d\, H:i:s", strtotime($date));
                 //echo "<p>" . $item->link . "</p>";
                 $url = $item->link;
                 $res = $feed->nuevaNoticia($id, $titulo, $descripcion, $date, $url,$imagen);
