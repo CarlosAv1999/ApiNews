@@ -1,5 +1,6 @@
 <?php
     //include_once 'alloycors.php';
+    //include('top-cache.php'); 
     include_once 'apinoticia.php';
     
     $api = new ApiNoticias();
@@ -29,4 +30,5 @@
     }else{
         $api->error('Error al llamar a la API');
     } 
+    //include('bottom-cache.php');
 ?>

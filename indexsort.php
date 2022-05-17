@@ -1,5 +1,6 @@
 <?php
 //include_once 'alloycors.php';
+//include('top-cache.php'); 
 include_once 'apinoticia.php';
 
 $api = new ApiNoticias();
@@ -10,4 +11,5 @@ if(isset($_GET['sort'])){
 }else{
     $api->error('Se ordeno por fecha');
 }
+//include('bottom-cache.php');
 ?>

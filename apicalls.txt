@@ -28,12 +28,3 @@ http://localhost:5000/ApiNews/postCategory.php/?name=
 
 post Feed
 http://localhost:5000/ApiNews/postFeed.php/?url=&name=
-
-function feedsService() {
-  function create(feeds) {
-    return axios({
-      method: 'GET',
-      baseURL: BASE_BACKEND_URL,
-      url: `http://localhost:5000/ApiNews/postFeed.php/?url${feeds.url}=&name=Prueba2`,
-    });
-  }

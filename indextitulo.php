@@ -1,5 +1,6 @@
 <?php
 //include_once 'alloycors.php';
+//include('top-cache.php'); 
 include_once 'apinoticia.php';
 
 $api = new ApiNoticias();
@@ -10,4 +11,5 @@ if(isset($_GET['title'])){
 }else{
     $api->error('No se encontro titulo que coincida con la busqueda');
 }
+//include('bottom-cache.php');
 ?>

@@ -1,4 +1,5 @@
 <?php
+//include('top-cache.php'); 
 include_once 'alloycors.php';
 class DB{
     private $host;
@@ -9,7 +10,7 @@ class DB{
 
     public function __construct(){
         $this->host     = 'localhost';
-        $this->db       = 'noticias2';
+        $this->db       = 'noticias3';
         $this->user     = 'root';
         $this->password = "123";
         $this->charset  = 'utf8mb4';
@@ -41,5 +42,5 @@ class DB{
 
 
 
-
+//include('bottom-cache.php');
 ?>

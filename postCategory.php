@@ -1,4 +1,5 @@
 <?php
+//include('top-cache.php'); 
 include_once 'alloycors.php';
 $name = $_GET['name'];
 //The url you wish to send the POST request to
@@ -27,4 +28,5 @@ curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
 //execute post
 $result = curl_exec($ch);
 echo $result;
+//include('bottom-cache.php');
 ?>

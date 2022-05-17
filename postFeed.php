@@ -1,15 +1,25 @@
 <?php
+//include('top-cache.php'); 
 include_once 'alloycors.php';
 $feeds = $_GET['feeds'];
-$url = $_GET['url'];
-$name = $_GET['name'];
+//$url = $_GET['url'];
+//$name = $_GET['name'];
 
 $urlf = json_decode($feeds);
+
+for($i = 0; $i<count($urlf); $i++){
+    $obj =  $urlf[$i];
+    $url = $obj->url;
+    $name = $obj->category;
+
+
+/*
 echo "-------------------------------------------------------------------------------";
 echo "<br>";
 print_r($urlf);
 echo "<br>";
 echo "-------------------------------------------------------------------------------";
+*/
 
 //echo "<br>";
 //echo "----------------------------------------------------------------------------------------------------";
@@ -20,9 +30,9 @@ $urla = "http://localhost:5000/ApiNews/addFeed.php";
 
 //The data you want to send via POST
 $fields = [
-    'url'      => $url,
+    'url'       => $url,
     'name'      => $name,
-    'btnSubmit'         => 'Submit'
+    'btnSubmit' => 'Submit'
 ];
 
 //url-ify the data for the POST
@@ -42,5 +52,6 @@ curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
 //execute post
 $result = curl_exec($ch);
 echo $result;
-
+}
+//include('bottom-cache.php');
 ?>

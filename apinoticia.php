@@ -1,4 +1,5 @@
 <?php
+//include('top-cache.php'); 
 include_once 'alloycors.php';
 include_once 'noticia.php';
 date_default_timezone_set('America/Mexico_City');
@@ -103,7 +104,7 @@ class ApiNoticias{
             echo json_encode($noticias);
             return json_encode($noticias);
         }else{
-            echo json_encode(array('mensaje' => 'No hay elementos'));
+            echo json_encode([]);
         }
         /*
         if($res->rowCount() == 1){
@@ -281,53 +282,107 @@ class ApiNoticias{
 
     function addCategoria($item){
         $categoria = new Noticia();
-        $res = $categoria->nuevaCategoria($item);
-        $this->exito('Nuevo categoria registrada');
+        $existe = true;
+
+        $obj1 = json_decode($this->getAllCategories());
+        $arrayFeeds = $obj1->{"items"};
+
+        for($i = 0; $i < count($arrayFeeds); $i++){
+            //echo $i;
+            $obj2 =  $arrayFeeds[$i];
+            $name = $obj2->name;
+            echo $name;
+
+            if (strcmp($name, $item['name']) === 0) {
+                $existe = false;
+            }
+            
+        }
+
+        if ($existe) {
+
+            $res = $categoria->nuevaCategoria($item);
+            $this->exito('Nuevo categoria registrada');
+        }else{
+            $this->error('Ya existe la categoria ingresada');
+        }
     }
 
     function addFeed($item){
         $feed = new Noticia();
+        $existe = true;
+        $imagenDef = "https://cdn-icons-png.flaticon.com/512/21/21601.png";
 
-        $obj1 = json_decode($this->getCategoryByName($item));
-        $arrayId = $obj1->{"items"};
-        $obj2 =  $arrayId[0];
-
-        $catId = $obj2->id;
-
-        $arrayFeed = array(
-            'id' => $catId,
-            'url' => $item['url']
-        );
-        $rss = simplexml_load_file($arrayFeed['url']);
-
-        $res = $feed->nuevoFeed($arrayFeed);
-
-        $obj1 = json_decode($this->getIdLastFeed());
-        $arrayId = $obj1->{"items"};
-        $obj2 =  $arrayId[0];
-        $lastFeedId =  $obj2->order_id;
-
+        $obj1 = json_decode($this->getAllInfoFeed());
+        //print_r($obj1);
+        $arrayFeeds = $obj1->{"items"};
         
-        
+        //echo = count($arrayFeeds);
 
-        echo '<h4>'. $rss->channel->title . '</h4>';
-        $imagen = $rss->channel->image->url;
-        foreach ($rss->channel->item as $item) {
-            //echo "<p>" . $item->title . "</p>";
-            $titulo = $item->title;
-            //echo "<p>" . $item->description . "</p>";
-            $descripcion = $item->description;
-            $descripcion = str_replace("<p>", "", $descripcion);
-            $descripcion = str_replace("</p>", "", $descripcion);
-            //echo "<p>" . $item->pubDate . "</p>";
-            $date = $item->pubDate;
-            $date= date("Y/m/d\, H:i:s\, D\, M j", strtotime($date));
-            //echo "<p>" . $item->link . "</p>";
-            $url = $item->link;
-            $res = $feed->nuevaNoticia($lastFeedId, $titulo, $descripcion, $date, $url, $imagen);
-        } 
+        for($i = 0; $i < count($arrayFeeds); $i++){
+            //echo $i;
+            $obj2 =  $arrayFeeds[$i];
+            $url = $obj2->url;
 
-        $this->exito('Nuevo feed registrado');
+            if (strcmp($url, $item['url']) === 0) {
+                $existe = false;
+            }
+            
+        }
+
+        if($existe){
+            $obj1 = json_decode($this->getCategoryByName($item));
+            $arrayId = $obj1->{"items"};
+            $obj2 =  $arrayId[0];
+
+            $catId = $obj2->id;
+
+            $arrayFeed = array(
+                'id' => $catId,
+                'url' => $item['url']
+            );
+
+            $rss = simplexml_load_file($arrayFeed['url'], 'SimpleXMLElement', LIBXML_NOWARNING);
+            
+            if($rss){
+                $res = $feed->nuevoFeed($arrayFeed);
+                $obj1 = json_decode($this->getIdLastFeed());
+                $arrayId = $obj1->{"items"};
+                $obj2 =  $arrayId[0];
+                $lastFeedId =  $obj2->order_id;
+    
+                
+                
+    
+                echo '<h4>'. $rss->channel->title . '</h4>';
+                $imagen = $rss->channel->image->url;
+    
+                if(strcmp($imagen, "") === 0){
+                    $imagen = $imagenDef;
+                }
+                foreach ($rss->channel->item as $item) {
+                    //echo "<p>" . $item->title . "</p>";
+                    $titulo = $item->title;
+                    //echo "<p>" . $item->description . "</p>";
+                    $descripcion = $item->description;
+                    $descripcion = str_replace("<p>", "", $descripcion);
+                    $descripcion = str_replace("</p>", "", $descripcion);
+                    //echo "<p>" . $item->pubDate . "</p>";
+                    $date = $item->pubDate;
+                    $date= date("Y/m/d\, H:i:s", strtotime($date));
+                    //echo "<p>" . $item->link . "</p>";
+                    $url = $item->link;
+                    $res = $feed->nuevaNoticia($lastFeedId, $titulo, $descripcion, $date, $url, $imagen);
+                } 
+    
+                $this->exito('Nuevo feed registrado'); 
+            }else{
+                $this->error('No se ha podido cargar el URL del Feed');
+            }
+            
+        }else{
+            $this->error("El url del feed ya existe");
+        }
     }
 
     function addNoticia($item){
@@ -339,6 +394,7 @@ class ApiNoticias{
 
     function refresh(){
         $feed = new Noticia();
+        $imagenDef = "https://cdn-icons-png.flaticon.com/512/21/21601.png";
 
         $obj1 = json_decode($this->getAllInfoFeed());
         //print_r($obj1);
@@ -353,26 +409,31 @@ class ApiNoticias{
             $url = $obj2->url;
             
             $this->destroyNewsFeed($id);
-            $rss = simplexml_load_file($url);
-            $imagen = $rss->channel->image->url;
-            foreach ($rss->channel->item as $item) {
-                //echo "<p>" . $item->title . "</p>";
-                $titulo = $item->title;
-                //echo "<p>" . $item->description . "</p>";
-                $descripcion = $item->description;
-                $descripcion = str_replace("<p>", "", $descripcion);
-                $descripcion = str_replace("</p>", "", $descripcion);
-                //echo "<p>" . $item->pubDate . "</p>";
-                $date = $item->pubDate;
-                $date= date("Y/m/d\, H:i:s\, D\, M j", strtotime($date));
-                //echo "<p>" . $item->link . "</p>";
-                $url = $item->link;
-                $res = $feed->nuevaNoticia($id, $titulo, $descripcion, $date, $url,$imagen);
-            } 
+            $rss = simplexml_load_file($url, 'SimpleXMLElement', LIBXML_NOWARNING);
+            if ($rss) {                
+                $imagen = $rss->channel->image->url;
+                if(strcmp($imagen, "") === 0){
+                    $imagen = $imagenDef;
+                }
+                foreach ($rss->channel->item as $item) {
+                    //echo "<p>" . $item->title . "</p>";
+                    $titulo = $item->title;
+                    //echo "<p>" . $item->description . "</p>";
+                    $descripcion = $item->description;
+                    $descripcion = str_replace("<p>", "", $descripcion);
+                    $descripcion = str_replace("</p>", "", $descripcion);
+                    //echo "<p>" . $item->pubDate . "</p>";
+                    $date = $item->pubDate;
+                    $date= date("Y/m/d\, H:i:s", strtotime($date));
+                    //echo "<p>" . $item->link . "</p>";
+                    $url = $item->link;
+                    $res = $feed->nuevaNoticia($id, $titulo, $descripcion, $date, $url,$imagen);
+                } 
+                $this->exito('Nuevo feed registrado');
+            }else{
+                $this->error('No se ha podido cargar el URL del Feed');
+            }
         }
-        
-        $this->exito('Nuevo feed registrado');
-        
     }
 
     function refreshOneFeed($id){
@@ -486,4 +547,5 @@ class ApiNoticias{
         return $this->error;
     }
 }
+//include('bottom-cache.php');
 ?>

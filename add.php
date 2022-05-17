@@ -1,5 +1,6 @@
 <?php
     //include_once 'alloycors.php';
+    //include('top-cache.php'); 
     include_once 'apipeliculas.php';
     
     $api = new ApiNoticias();
@@ -32,5 +33,5 @@
     }
 
 
-    
+    //include('bottom-cache.php');
 ?>
