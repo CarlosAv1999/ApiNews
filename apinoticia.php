@@ -1,4 +1,5 @@
 <?php
+//include('top-cache.php'); 
 include_once 'alloycors.php';
 include_once 'noticia.php';
 date_default_timezone_set('America/Mexico_City');
@@ -546,4 +547,5 @@ class ApiNoticias{
         return $this->error;
     }
 }
+//include('bottom-cache.php');
 ?>

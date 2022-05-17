@@ -1,4 +1,5 @@
 <?php
+//include('top-cache.php'); 
 include_once 'alloycors.php';
 include_once 'apinoticia.php';
 
@@ -15,4 +16,5 @@ if(isset($_GET['id'])){
 }else{
     $api->getAll();
 }
+//include('bottom-cache.php');
 ?>

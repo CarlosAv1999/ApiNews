@@ -1,4 +1,5 @@
 <?php
+//include('top-cache.php'); 
 date_default_timezone_set('America/Mexico_City');
 //echo 'hola mundo';
 $date1 = "Thu, 17 Mar 2022 16:19:23 GMT";
@@ -42,4 +43,5 @@ echo date("Y/m/d H:i:s D\, M j", strtotime("Sun, 20 Mar 2022 12:19:05 -0400"));
 
         } 
         */
+        //include('bottom-cache.php');
 ?>

@@ -1,4 +1,5 @@
 <?php
+//include('top-cache.php'); 
 include_once 'alloycors.php';
 class DB{
     private $host;
@@ -41,5 +42,5 @@ class DB{
 
 
 
-
+//include('bottom-cache.php');
 ?>

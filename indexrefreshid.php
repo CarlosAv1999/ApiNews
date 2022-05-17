@@ -1,5 +1,6 @@
 <?php
 //include_once 'alloycors.php';
+//include('top-cache.php'); 
 include_once 'apinoticia.php';
 
 $api = new ApiNoticias();
@@ -15,4 +16,5 @@ if(isset($_GET['id'])){
 }else{
     $api->refresh();
 }
+//include('bottom-cache.php');
 ?>

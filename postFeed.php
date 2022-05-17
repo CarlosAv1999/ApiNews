@@ -1,4 +1,5 @@
 <?php
+//include('top-cache.php'); 
 include_once 'alloycors.php';
 $feeds = $_GET['feeds'];
 //$url = $_GET['url'];
@@ -52,4 +53,5 @@ curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
 $result = curl_exec($ch);
 echo $result;
 }
+//include('bottom-cache.php');
 ?>
